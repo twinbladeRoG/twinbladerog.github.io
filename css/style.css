@@ -1,0 +1,14 @@
+@import url(/node_modules/bulma/css/bulma.css);
+#svg {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden; }
+  #svg #parent {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-height: 90vh; }
+    #svg #parent #container {
+      position: absolute;
+      right: 0; }
