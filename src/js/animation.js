@@ -3,7 +3,6 @@ import axios from 'axios';
 
 const animation = () => {
 	const draw = SVG().addTo('#svg');
-	// draw.size('100%', '100%');
 	draw.attr('id', 'parent');
 	draw.attr('viewBox', '0 0 1147.33 899.7');
 
@@ -12,8 +11,11 @@ const animation = () => {
 			draw.svg(data);
 			draw.findOne('svg#parent > svg').attr({
 				id: 'container',
+				viewBox: '0 0 1147.33 899.7'
 			});
 			animateDots(draw);
+			animateAngles(draw);
+			typeCode(draw);
 		})
 		.catch(err => console.log(err));
 
@@ -22,44 +24,81 @@ const animation = () => {
 const animateDots = (draw) => {
 	const timeline = new Timeline().persist(true);
 
-	let dot1 = draw.find('#dot1');
-	let dot2 = draw.find('#dot2');
-	let dot3 = draw.find('#dot3');
+	const dot1 = draw.find('#dot1');
+	const dot2 = draw.find('#dot2');
+	const dot3 = draw.find('#dot3');
 
 	dot1.timeline(timeline);
 	dot2.timeline(timeline);
 	dot3.timeline(timeline);
 
 	dot1.animate({
-		duration: 2000,
-		when: 'now',
-		delay: 0
-	}).attr({ opacity: 0.1})
-		.animate({
-			duration: 2000,
-		})
-		.attr({ opacity: 1});
-
+		duration: 1000, when: 'now', delay: 0
+	}).attr({ opacity: 0});
 	dot2.animate({
-		duration: 2000,
-		when: 'after'
-	}).attr({ opacity: '0.1'})
-		.animate({
-			duration: 2000,
-			when: 'after'
-		})
-		.attr({ opacity: 1});
+		duration: 1000, when: 'after'
+	}).attr({ opacity: 0});
+	dot3.animate({
+		duration: 1000, when: 'after'
+	}).attr({ opacity: 0});
 
 	dot3.animate({
-		duration: 2000,
-		when: 'after'
-	}).attr({ opacity: '0.1'})
-		.animate({
-			duration: 2000,
-			when: 'after'
-		})
-		.attr({ opacity: 1})
+		duration: 1000, when: 'after'
+	}).attr({ opacity: 1});
+	dot2.animate({
+		duration: 1000, when: 'after'
+	}).attr({ opacity: 1});
+	dot1.animate({
+		duration: 1000, when: 'after'
+	}).attr({ opacity: 1}).after(() => timeline.stop().play());
+};
+
+const animateAngles = draw => {
+	const timeline = new Timeline().persist(true);
+
+	const langle = draw.find('#left-bracket');
+	const rangle = draw.find('#right-bracket');
+	const slash = draw.find('#mid-slash');
+
+	langle.timeline(timeline);
+	rangle.timeline(timeline);
+	slash.timeline(timeline);
+
+	langle.attr({ opacity: 0});
+	rangle.attr({ opacity: 0});
+	slash.attr({ opacity: 0});
+
+	langle.animate({
+		duration: 1000,
+		delay: 1000
+	}).attr({ opacity: 1 });
+
+	rangle.animate({
+		duration: 1000
+	}).attr({ opacity: 1 });
+
+	slash.animate({
+		duration: 1000
+	}).attr({ opacity: 1 });
+
+	langle.animate({
+		duration: 1000
+	}).transform({ translateX: -10, translateY: -10 });
+
+	rangle.animate({
+		duration: 1000
+	}).transform({ translateX: 10, translateY: 10 });
+
+	slash.animate({ duration: 2000 })
+		.transform({ rotate: 180 })
+		.animate({ duration: 2000 })
+		.transform({ rotate: 0 })
 		.after(() => timeline.stop().play());
+};
+
+const typeCode = (draw) => {
+	const text = draw.find('text');
+	text.build(true);
 };
 
 export { animation };
